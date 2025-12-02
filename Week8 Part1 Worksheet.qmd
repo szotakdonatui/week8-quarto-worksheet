@@ -1,0 +1,127 @@
+---
+title: "PSY6422 Quarto Practice"
+author: "Donny"
+date: today
+format:
+  pdf:
+    toc: true
+    number-sections: true
+execute:
+  echo: true
+  warning: false
+  message: false
+bibliography: references.bib
+csl: https://www.zotero.org/styles/apa
+---
+
+```{=html}
+<!-- 
+# PSY6422 - Data Analysis & Visualisation
+# Week 8: Introduction to R Markdown & Quarto Worksheet
+
+Instructions:
+1. Work directly in this .qmd file.
+2. Read the comments and code comments (#) for guidance.
+3. Fill in the missing code and text where indicated.
+4. When finished, render to PDF.
+-->
+```
+
+# Introduction
+
+```{=html}
+<!-- Write a short introduction to your report here.
+Explain that you will include an image, load data from the web, and produce a plot and a table. -->
+```
+
+# Including an Image
+
+```{=html}
+<!-- 
+Task:
+1. Download an image from an open source. Suggested example:
+   https://raw.githubusercontent.com/allisonhorst/palmerpenguins/master/man/figures/lter_penguins.png
+2. Save it into a folder called "images" in your project.
+3. Include it below using Markdown: ![Caption](path/to/image)
+-->
+```
+
+# Introduction
+
+This report demonstrates basic Quarto functionality for data analysis and visualisation. It includes an image, loads a dataset from the web, and produces a scatter plot and a summary table using R and the tidyverse.
+
+# Including an Image
+
+![Penguins at Palmer Station](images/lter_penguins.png)
+
+# Data {#sec-data}
+
+```{r}
+#| label: load-data
+library(tidyverse)
+penguins <- read_csv("https://raw.githubusercontent.com/allisonhorst/palmerpenguins/master/inst/extdata/penguins.csv")
+penguins <- drop_na(penguins)
+head(penguins)
+
+```
+
+# Visualisation
+
+```{=html}
+<!-- 
+Task:
+1. Create a scatter plot of bill length (x) vs bill depth (y).
+2. Color the points by species.
+3. Give the plot a descriptive title and axis labels.
+-->
+```
+
+```{r}
+#| label: fig-bills
+#| fig-cap: "Bill length vs bill depth by species."
+ggplot(penguins, aes(x = bill_length_mm, y = bill_depth_mm, color = species)) +
+  geom_point() +
+  labs(
+    title = "Bill Length vs Bill Depth by Species",
+    x = "Bill Length (mm)",
+    y = "Bill Depth (mm)",
+    color = "Species"
+  ) +
+  theme_minimal()
+
+```
+
+# Summary Table
+
+```{=html}
+<!-- 
+Task:
+1. Group the data by species.
+2. Calculate the mean bill length for each species.
+3. Display the results as a table.
+-->
+```
+
+```{r}
+#| label: tbl-summary
+#| tbl-cap: "Mean bill length (mm) by species."
+penguins %>%
+  group_by(species) %>%
+  summarise(mean_bill_length = mean(bill_length_mm, na.rm = TRUE)) %>%
+  knitr::kable()
+
+```
+
+# Conclusion
+
+```{=html}
+<!-- Write 2–3 sentences summarising your findings.
+Reference your figure and table using @fig-bills and @tbl-summary.
+Also reference the data section using @sec-data.
+
+The dataset loaded in @sec-data contains measurements of penguin species from Palmer Station.  
+The scatter plot @fig-bills shows clear differences in bill dimensions across species.  
+The summary table @tbl-summary confirms that Gentoo penguins have the longest average bill length. -->
+```
+
+<!-- Render your PDF -->
